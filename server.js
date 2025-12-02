@@ -1,32 +1,31 @@
-import express from "express";
-import path from "path";
-import cors from "cors";
-import { fileURLToPath } from "url";
-import translate from "google-translate-api-x"; // ✅ more stable fork
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const express = require("express");
+const http = require("http");
+const socketio = require("socket.io");
+const translate = require("@vitalets/google-translate-api");
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // serve HTML files
+const server = http.createServer(app);
+const io = socketio(server);
 
-// ✅ Translation route
-app.post("/api/translate", async (req, res) => {
-  const { text, target } = req.body;
-  if (!text || !target)
-    return res.status(400).json({ error: "Missing text or target language" });
+app.use(express.static("public"));
 
-  try {
-    const result = await translate(text, { to: target });
-    res.json({ translatedText: result.text });
-  } catch (err) {
-    console.error("Translation error:", err);
-    res.status(500).json({ error: "Translation failed" });
-  }
+io.on("connection", (socket) => {
+    console.log("User connected");
+
+    socket.on("translate-message", async (data) => {
+        try {
+            // Translate to listener's selected language
+            const result = await translate(data.text, { to: data.targetLang });
+
+            socket.emit("translated-text", {
+                text: result.text,
+                lang: data.targetLang
+            });
+
+        } catch (err) {
+            console.error("Translation Error:", err);
+        }
+    });
 });
 
-// ✅ Start server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`🌐 Server running at http://localhost:${PORT}`));
+server.listen(5000, () => console.log("Server running on port 5000"));

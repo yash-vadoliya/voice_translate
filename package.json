@@ -1,23 +1,14 @@
 {
-  "name": "voice-translate",
+  "name": "voice-translator",
   "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "vercel dev" 
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@vitalets/google-translate-api": "^9.2.1",
-    "body-parser": "^2.2.0",
+    "@vitalets/google-translate-api": "^8.0.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "google-translate-api-x": "^4.7.0",
-    "node-fetch": "^2.7.0",
-    "socket.io": "^4.8.1"
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
   }
 }
