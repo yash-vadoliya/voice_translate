@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎤 Real-time Voice Translator</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><span class="mic-icon">🎤</span> Real-time Voice Translator</h1>
+    </header>
+
+    <div class="controls-container">
+      <div class="lang-selector">
+        <label for="sourceLang">I speak (Source):</label>
+        <select id="sourceLang"></select>
+      </div>
+
+      <div class="lang-selector">
+        <label for="targetLang">Translate to (Target):</label>
+        <select id="targetLang"></select>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="start" class="btn-primary">
+        <span class="icon">🎙️</span> Start Listening
+      </button>
+      <button id="stop" class="btn-secondary" disabled>
+        <span class="icon">⏹️</span> Stop Translator
+      </button>
+    </div>
+
+    <div id="output-container">
+      <div class="output-box detected-output">
+        <p class="label">Detected (Live Speech):</p>
+        <p id="speech" class="text-content">-</p>
+      </div>
+      <div class="output-box translated-output">
+        <p class="label">Translated:</p>
+        <p id="translated" class="text-content">-</p>
+      </div>
+    </div>
+
+    <footer class="hint">
+      <small>⚠️ Use Chrome/Edge on mobile for **best** Speech Recognition support. Ensure microphone access is granted.</small>
+    </footer>
+  </div>
+  <script src="/script.js"></script>
+</body>
+</html>
