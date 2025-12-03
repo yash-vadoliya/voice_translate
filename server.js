@@ -1,20 +1,26 @@
 const express = require("express");
 const http = require("http");
+const cors = require("cors");
 const socketio = require("socket.io");
 const translate = require("@vitalets/google-translate-api");
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+app.use(cors());
+app.use(express.json());
 
-app.use(express.static("public"));
+const server = http.createServer(app);
+const io = socketio(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 io.on("connection", (socket) => {
-    console.log("User connected");
+    console.log("Client connected");
 
     socket.on("translate-message", async (data) => {
         try {
-            // Translate to listener's selected language
             const result = await translate(data.text, { to: data.targetLang });
 
             socket.emit("translated-text", {
@@ -22,8 +28,8 @@ io.on("connection", (socket) => {
                 lang: data.targetLang
             });
 
-        } catch (err) {
-            console.error("Translation Error:", err);
+        } catch (error) {
+            console.log("Translation Error:", error);
         }
     });
 });
